@@ -19,7 +19,7 @@ public class Importer
     
     public ArrayList<Show> buildSchedulePage() throws IOException
     {
-        Document doc = Jsoup.connect("http://www.wrek.org/schedule/").get();
+        Document doc = Jsoup.connect("https://www.wrek.org/schedule/").get();
         ArrayList<Show> showsAll = new ArrayList<Show>();
         ArrayList<Show> showsDay;
         
@@ -35,7 +35,7 @@ public class Importer
     
     public ArrayList<ShowDescription> buildShowDescriptions() throws IOException
     {
-        Document doc = Jsoup.connect("http://www.wrek.org/shows/specialty/").get();
+        Document doc = Jsoup.connect("https://www.wrek.org/shows/specialty/").get();
         ArrayList<ShowDescription> descriptions = new ArrayList<ShowDescription>();
         
         Elements elements = doc.select(".mosaic-block");
@@ -213,7 +213,7 @@ public class Importer
         
         desc.Title = textFixup(getTextFromFirstElement(element.select("h4")));
         
-        if (desc.Title != "")
+        if (!desc.Title.equals(""))
         {
            return desc;
         }

@@ -19,6 +19,7 @@ public class Resolver
     static final String BROADWAY_ICON_URL = "http://www.selbie.com/wrek/broadway.png";
     static final String FREAKERS_ICON_URL = "http://www.selbie.com/wrek/freakers.png";
     static final String STORYTIME_ICON_URL = "http://www.selbie.com/wrek/storytime.png";
+    static final String LIO_ICON_URL = "http://www.selbie.com/wrek/lio.png";
 
     static final String LIVE_STREAM_128KBS_URL = "http://streaming.wrek.org:8000/wrek_live-128kb.m3u";
     static final String LIVE_STREAM_24KBS_URL = "http://streaming.wrek.org:8000/wrek_live-24kb-mono.m3u";
@@ -191,7 +192,7 @@ public class Resolver
     
     public void fixupGenreAndLogos(Show show)
     {
-        String [] titles = {"atmospherics", "the classics", "just jazz", "rock, rhythm, and roll", "blue plate special", "the locals", "tapas and tunes", "pop up show", "a bit off broadway", "freaker's ball", "storytime", "slow riot", "techniques"};
+        String [] titles = {"atmospherics", "the classics", "just jazz", "rock, rhythm, and roll", "blue plate special", "the locals", "tapas and tunes", "pop up show", "a bit off broadway", "freaker's ball", "storytime", "slow riot", "techniques", "lost in oscillation"};
         
         String [] genres = {"Ambient, drone, spaced-out",
                             "Classical (Traditional and contemporary)",
@@ -205,7 +206,8 @@ public class Resolver
                             "Classic Rock",
                             "Concept album",
                             "Post rock, instrumental, math rock",
-                            "Turntablism, Instrumental Hip Hop, Chopped and Screwed"
+                            "Turntablism, Instrumental Hip Hop, Chopped and Screwed",
+                            "Minimal Wave, Minimal Synth, Synthpop, EBM"
                            };
         
         String [] logos = {LOGO_URL_ATMOSPHERICS,
@@ -220,7 +222,8 @@ public class Resolver
                            FREAKERS_ICON_URL,
                            STORYTIME_ICON_URL,
                            SLOWRIOT_ICON_URL,
-                           TECHNIQUES_ICON_URL
+                           TECHNIQUES_ICON_URL,
+                           LIO_ICON_URL
                            };
         
                             
@@ -272,14 +275,14 @@ public class Resolver
         // turn each M3U into a playlist
         for (Show s : shows)
         {
-            if (!s.M3U_High.isEmpty() && !s.M3U_High.contains("http://"))
+            if (!s.M3U_High.isEmpty() && !s.M3U_High.contains("http"))
             {
-                s.M3U_High = "http://www.wrek.org" + s.M3U_High;
+                s.M3U_High = "https://www.wrek.org" + s.M3U_High;
             }
             
-            if (!s.M3U_Low.isEmpty() && !s.M3U_Low.contains("http://"))
+            if (!s.M3U_Low.isEmpty() && !s.M3U_Low.contains("http"))
             {
-                s.M3U_Low = "http://www.wrek.org" + s.M3U_Low;
+                s.M3U_Low = "https://www.wrek.org" + s.M3U_Low;
             }
             
             s.urls_High  = CrackM3U(s.M3U_High);
