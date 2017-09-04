@@ -190,9 +190,9 @@ public class Resolver
         
     }
     
-    public void fixupGenreAndLogos(Show show)
+    public void fixupGenreAndLogos(Show show, HashMap<String, Show> showMap)
     {
-        String [] titles = {"atmospherics", "the classics", "just jazz", "rock, rhythm, and roll", "blue plate special", "the locals", "tapas and tunes", "pop up show", "a bit off broadway", "freaker's ball", "storytime", "slow riot", "techniques", "lost in oscillation"};
+        String [] titles = {"atmospherics", "the classics", "just jazz", "rock, rhythm, and roll", "blue plate special", "the locals", "tapas and tunes", "pop up show", "a bit off broadway", "freaker's ball", "storytime", "slow riot", "techniques"};
         
         String [] genres = {"Ambient, drone, spaced-out",
                             "Classical (Traditional and contemporary)",
@@ -207,7 +207,6 @@ public class Resolver
                             "Concept album",
                             "Post rock, instrumental, math rock",
                             "Turntablism, Instrumental Hip Hop, Chopped and Screwed",
-                            "Minimal Wave, Minimal Synth, Synthpop, EBM"
                            };
         
         String [] logos = {LOGO_URL_ATMOSPHERICS,
@@ -222,11 +221,27 @@ public class Resolver
                            FREAKERS_ICON_URL,
                            STORYTIME_ICON_URL,
                            SLOWRIOT_ICON_URL,
-                           TECHNIQUES_ICON_URL,
-                           LIO_ICON_URL
+                           TECHNIQUES_ICON_URL
                            };
         
-                            
+
+
+        // try to resolve show descriptions and logos using the map file (if available)
+        if (showMap != null)
+        {
+            if (show.Genres.isEmpty() && showMap.containsKey(show.Title.toLowerCase()))
+            {
+                Show entry = showMap.get(show.Title.toLowerCase());
+                show.Genres = entry.Genres;
+            }
+
+            if (show.LogoURL.isEmpty() && showMap.containsKey(show.Title.toLowerCase()))
+            {
+                Show entry = showMap.get(show.Title.toLowerCase());
+                show.LogoURL = entry.LogoURL;
+            }
+        }
+
         
         if (show.Genres.isEmpty())
         {
@@ -259,7 +274,7 @@ public class Resolver
     }
     
     
-    public void resolve(ArrayList<Show> shows, ArrayList<ShowDescription> descriptions)
+    public void resolve(ArrayList<Show> shows, ArrayList<ShowDescription> descriptions, HashMap<String, Show> showMap)
     {
         mergeDescriptionsIntoShows(shows, descriptions);
         
@@ -293,7 +308,7 @@ public class Resolver
         for (Show s : shows)
         {
             fixupDates(s);
-            fixupGenreAndLogos(s);
+            fixupGenreAndLogos(s, showMap);
         }
         
         for (Show show : shows)

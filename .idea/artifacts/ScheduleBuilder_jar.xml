@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ScheduleBuilder:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ScheduleBuilder_jar</output-path>
+    <root id="archive" name="ScheduleBuilder.jar">
+      <element id="module-output" name="ScheduleBuilder" />
+    </root>
+  </artifact>
+</component>

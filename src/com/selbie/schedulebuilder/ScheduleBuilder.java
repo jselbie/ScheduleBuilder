@@ -3,13 +3,23 @@ package com.selbie.schedulebuilder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
-
+import java.util.HashMap;
 
 
 public class ScheduleBuilder
 {
-    
+
+    public static String getArgmument(String argname, String[] args) {
+
+        String result = "";
+        for (int i = 1; i < args.length; i++) {
+            if (args[i-1].equals(argname)) {
+                result = args[i];
+                break;
+            }
+        }
+        return result;
+    }
 
     /**
      * @param args
@@ -19,7 +29,20 @@ public class ScheduleBuilder
         // TODO Auto-generated method stub
         ArrayList<Show> shows = null;
         ArrayList<ShowDescription> descriptions = null;
-        
+        HashMap<String, Show> showmap = null;
+
+        String argFilename = getArgmument("--output", args);
+        String argMapFile = getArgmument("--mapfile", args);
+
+        if (!argFilename.isEmpty()) {
+            System.out.println("Using " + argFilename + " for output");
+        }
+
+        if (!argMapFile.isEmpty()) {
+            System.out.println("Using " + argFilename + " for map file");
+            showmap = ShowMap.load(argMapFile);
+        }
+
         Importer importer = new Importer();
         try
         {
@@ -37,7 +60,7 @@ public class ScheduleBuilder
         
         System.out.println("Resolving...");
         Resolver resolver = new Resolver();
-        resolver.resolve(shows, descriptions);
+        resolver.resolve(shows, descriptions, showmap);
         shows = resolver.filterForToday(shows);
         
         System.out.println("Exporting...");
@@ -45,7 +68,8 @@ public class ScheduleBuilder
         String finalschedule = exporter.DumpToJson(shows);
         try
         {
-            exporter.SaveToFile(finalschedule, (args.length > 0 ? args[0] : null));
+            if (!argFilename.isEmpty())
+                exporter.SaveToFile(finalschedule, argFilename);
         }
         catch (FileNotFoundException e)
         {
